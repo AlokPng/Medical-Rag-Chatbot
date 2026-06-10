@@ -1,0 +1,37 @@
+# Core RAG Stack — fully verified compatible versions
+langchain==0.3.25
+langchain-core==0.3.86
+langchain-groq==0.3.8
+langchain-huggingface==0.1.2
+langchain-pinecone==0.2.3
+langchain-community==0.3.24
+
+# Vector DB — must be >=5.4.0,<6.0.0 (langchain-pinecone==0.2.3 constraint)
+pinecone==5.4.2
+
+# Groq (FREE LLM API) — must be <1.0.0 (langchain-groq==0.3.8 constraint)
+groq==0.37.1
+
+# HuggingFace Embeddings (FREE, runs locally)
+sentence-transformers==3.3.1
+
+# PubMed Data Fetching
+biopython==1.84
+requests==2.32.3
+xmltodict==0.13.0
+
+# API Backend
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+python-dotenv==1.0.1
+httpx==0.27.2
+
+# Text Processing
+beautifulsoup4==4.12.3
+lxml==5.3.0
+tiktoken==0.8.0
+
+# Utilities
+tqdm==4.66.5
+tenacity==9.0.0
