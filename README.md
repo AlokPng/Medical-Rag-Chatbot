@@ -21,38 +21,38 @@ The application retrieves relevant medical literature from PubMed-derived vector
 
 ---
 
-# Architecture
+## Architecture
 
+```text
 Question
-    │
-    ▼
+      │
+      ▼
 Embedding Generation
-    │
-    ▼
+      │
+      ▼
 Pinecone Similarity Search
-    │
-    ▼
+      │
+      ▼
 Top-K Relevant Chunks
-    │
-    ▼
+      │
+      ▼
 Context Formatting
-    │
-    ▼
+      │
+      ▼
 Groq Llama 3.3
-    │
-    ▼
+      │
+      ▼
 Answer Generation
-    │
-    ▼
+      │
+      ▼
 PMID Extraction
-    │
-    ▼
+      │
+      ▼
 Citation Mapping
-    │
-    ▼
+      │
+      ▼
 Final Response
-
----
+```
 
 # Ingestion Pipeline
 
