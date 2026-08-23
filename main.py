@@ -32,12 +32,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 # ─── App Lifecycle 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    log.info("Warming up RAG pipeline...")
-    try:
-        get_pipeline()._lazy_init()
-        log.info("Pipeline warm.")
-    except Exception as e:
-        log.error(f"Pipeline init failed: {e}")
+    log.info("Medical RAG API started.")
     yield
     log.info("Shutting down.")
 
