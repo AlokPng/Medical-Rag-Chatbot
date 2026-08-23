@@ -91,6 +91,8 @@ Instructions:
 6. Use precise medical terminology but briefly explain technical terms.
 7. End with a "Key Takeaway" summary sentence.
 8. NEVER give treatment recommendations or replace professional medical advice.
+9. Do NOT reveal your reasoning, thinking process, analysis, or planning.
+10. Return ONLY the final answer that should be shown to the user.
 
 Format: Answer in clear paragraphs with inline citations like [PMID: 12345678].
 """
@@ -138,8 +140,8 @@ class MedicalRAGPipeline:
         self._llm = ChatGroq(
             model=LLM_MODEL,
             api_key=GROQ_API_KEY,
-            temperature=0.1,   # Low temp for factual medical content
-            max_tokens=2048,
+            temperature=0.1,   
+            max_tokens=2048
         )
         log.info(f"Loaded LLM: {LLM_MODEL} via Groq")
 
@@ -202,8 +204,28 @@ class MedicalRAGPipeline:
             ("system", SYSTEM_PROMPT),
             ("human",  HUMAN_TEMPLATE),
         ])
-        chain  = prompt | self._llm | StrOutputParser()
+        chain = prompt | self._llm | StrOutputParser()
         answer = chain.invoke({"context": context, "question": question})
+        print("RAW OUTPUT:\n", repr(answer[:500]))
+
+        # Remove leaked reasoning from Qwen
+        answer = re.sub(r"(?is)<think>.*?</think>", "", answer).strip()
+
+        # Keep only the final answer
+        start_markers = [
+            "Based on the provided",
+            "According to the provided",
+            "The retrieved context",
+            "Based on the retrieved",
+        ]
+
+        for marker in start_markers:
+            idx = answer.find(marker)
+            if idx != -1:
+                answer = answer[idx:]
+                break
+
+        answer = answer.strip()
 
         # Build citation objects from retrieved metadata
         cited_pmids = set(self._extract_cited_pmids(answer))
