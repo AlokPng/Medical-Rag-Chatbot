@@ -20,6 +20,9 @@ from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
 from backend.rag_pipeline import get_pipeline, RAGResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
 
 load_dotenv()
 log = logging.getLogger(__name__)
@@ -82,6 +85,11 @@ class HealthResponse(BaseModel):
     total_vectors: int
     model:       str
 
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
+@app.get("/")
+async def home():
+    return FileResponse(os.path.join("frontend", "index.html"))
 
 # ─── Routes ──────────────────────────────────────────────────────────────────
 @app.post("/chat", response_model=ChatResponse, summary="Ask a medical question")
